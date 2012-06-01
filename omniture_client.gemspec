@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
      "lib/omniture_client/meta_var.rb",
      "lib/omniture_client/printer.rb",
      "lib/omniture_client/var.rb",
-     "lib/rails.rb",
+     "lib/omniture_rails.rb",
      "omniture_client.gemspec",
      "sample/omniture.yml"
   ]
