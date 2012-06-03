@@ -12,6 +12,7 @@ module OmnitureClient
     attr_accessor :aliases, :base_url, :ssl_url, :suite, :version
 
     def config(config_hash)
+      raise ArgumentError, "You must supply a configuration hash to OmnitureClient#config" if config_hash.nil
       config_hash.each do |key, val|
         send("#{key}=", val)
       end
