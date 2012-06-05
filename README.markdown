@@ -33,6 +33,7 @@ You must configure the Omniture namespace, suite(s), version that you wish to us
         movie_titles: e1
         referrer: r
 
+As well as the omniture.yml you need to also add the `app/reporters` directory to your load path. So in your enviroment file add the 2 following lines:
 
     # config/enviroment.rb
     Rails::Initializer.run do |config|
@@ -116,7 +117,7 @@ Reporters have access to all controller instance variables and methods. Below we
 
 The `pageName` param is an extremely important param, the most important in fact. The `r` param which represents the referrer is also very important. The page name will default the the URL if you do not specify it, which is probably what you do not want. For the purposes of simiplicity I made the page name simple but in reality you will want it to be something like this:
 
-      var :pageName do 
+    var :pageName do 
       case action_name
         when 'show' : "Movie - #{@movie.title}"
         else 'index' : "Movie List Page"
