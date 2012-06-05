@@ -9,6 +9,7 @@ This gem provides the ability to track a Rails application at the controller lev
 
 ### File Structure
 You create reporters in 'app/reporters' directory, which correspond to your controllers. The example I will use is a `MoviesController`. Omniture client will first attempt to use `MoviesReporter`. If you have not defined the `MoviesReporter`, then it will use the `BasicReporter`, which is what all controllers that do not have any special functionality should use. If you have not yet defined a `BasicReporter`, then it will use a stub that tracks nothing. You will pretty much always at least want a basic reporter, and for controllers that need to track special events or custom variables you should use a custom reporter.
+
     rails_project/
     ..../app
     ......../reporters
@@ -20,6 +21,7 @@ You create reporters in 'app/reporters' directory, which correspond to your cont
 
 ### Configuration
 You must configure the Omniture namespace, suite(s), version that you wish to use. Optionally, you can set up aliases to make things easier for yourself when coding reporters. Omniture uses `c1`, `e1`, `r`, etc to represent custom variables, e_vars, the referrer, etc. These param names are obscure and can be hard to remember so you can set up aliases for them. From the example below `movie_title` repersents custom varibale 2 (`c2`).
+
     # config/omniture.yml
     development:
       base_url: http://102.112.2O7.net
@@ -31,7 +33,7 @@ You must configure the Omniture namespace, suite(s), version that you wish to us
         movie_titles: e1
         referrer: r
 
-As well as the omniture.yml you need to also add the `app/reporters` directory to your load path. So in your enviroment file add the 2 following lines:
+
     # config/enviroment.rb
     Rails::Initializer.run do |config|
       config.load_paths += %W( #{RAILS_ROOT}/app/reporters )
@@ -39,6 +41,7 @@ As well as the omniture.yml you need to also add the `app/reporters` directory t
     end
 
 Lastly, you need to specify which of your controllers you want to track. In most cases you will want to track all controllers so add this line to your application controller:
+
     # app/controllers/application_controller.rb
     class ApplicationController < ActionController::Base
       reports_to_omniture
@@ -58,6 +61,7 @@ The view code is straight foward. This is img tag is what actually sends the inf
 
 ### Controller
 Here is an example of a controller we would like to track:
+
     # app/controller/movies_controller.rb
     class MoviesController < ApplicationController
 			
@@ -79,9 +83,10 @@ Here is an example of a controller we would like to track:
     end
 
 ### Reporter
-Reporters have access to all controller instance variables and methods. Below we use the `@movie` instance variable and `request` instance method which are from the controller instance. Also, be aware of the omniture.yml configuration, `:search_term` and `movie_titles` are aliases specific to this movies example. In your app you will want to use `c1` and `c2` or set up your own aliases in your omniture.yml. 
+Reporters have access to all controller instance variables and methods. Below we use the `@movie` instance variable and `request` instance method which are from the controller instance. Also, be aware of the omniture.yml configuration, `:search_term` and `movie_titles` are aliases specific to this movies example. In your app you will want to use `c1` and `c2` or set up your own aliases in your omniture.yml. Also, note the use of singular rather than plural.
 
-    class MoviesReporter < OmnitureClient::Base
+
+    class MovieReporter < OmnitureClient::Base
       var :pageName do 
         page_name = "Movie Page"
       end
@@ -110,7 +115,8 @@ Reporters have access to all controller instance variables and methods. Below we
     end
 
 The `pageName` param is an extremely important param, the most important in fact. The `r` param which represents the referrer is also very important. The page name will default the the URL if you do not specify it, which is probably what you do not want. For the purposes of simiplicity I made the page name simple but in reality you will want it to be something like this:
-    var :pageName do 
+
+      var :pageName do 
       case action_name
         when 'show' : "Movie - #{@movie.title}"
         else 'index' : "Movie List Page"
@@ -146,6 +152,7 @@ Sometime there is a need to track events or other custom variables on the server
 
 ## Omniture Client for Sinatra (or other ruby web framework)
 This gem works with any ruby web framework. However, some of the functionality like server-side tracking is only implemented for Rails. Here is an example using Omniture Client to track a Sinatra app.
+
     # application.rb
     require 'omniture_client'
 
