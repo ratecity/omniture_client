@@ -5,7 +5,7 @@ This gem integrates Omniture SiteCatalyst into your web app.
     gem install omniture_client
 
 ## Omniture on Rails
-This gem provides the ability to track a Rails application at the controller level. I prefer a completely sever-side implementation as opposed to using Omniture's s_code.js. This gem supports using both; however, the majority of the examples will be for a completely 
+This gem provides the ability to track a Rails application at the controller level. I prefer a completely sever-side implementation as opposed to using Omniture's s_code.js. This gem supports using both; however, the majority of the examples will be for a completely server-side implementation.
 
 ### File Structure
 You create reporters in 'app/reporters' directory, which correspond to your controllers. The example I will use is a `MoviesController`. Omniture client will first attempt to use `MoviesReporter`. If you have not defined the `MoviesReporter`, then it will use the `BasicReporter`, which is what all controllers that do not have any special functionality should use. If you have not yet defined a `BasicReporter`, then it will use a stub that tracks nothing. You will pretty much always at least want a basic reporter, and for controllers that need to track special events or custom variables you should use a custom reporter.
