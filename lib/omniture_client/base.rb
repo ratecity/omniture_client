@@ -23,6 +23,10 @@ module OmnitureClient
       end
     end
 
+    def var(name)
+      vars.select { |var| var.name == name }.first 
+    end
+
     def add_var(name, value)
       self.class.var(name) do
         value
